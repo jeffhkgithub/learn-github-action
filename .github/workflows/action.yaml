@@ -1,0 +1,33 @@
+# Define the name of the workflow
+name: Deploy my Lambda Function
+
+on:
+  push:
+    branches:
+      main:
+# Five steps of the job
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Step 1 - Check out code
+      uses: actions/checkout@v2
+    - name: Step 2 - set up python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+    - name: Step 3 - Install library
+      run: |
+        cd function
+        python -m pip install --upgrade pip
+        if [ -f requiremetns.txt]; then pip install -r requirements.txt -t .; fi
+     - name: Step 4 - Create zip bundle
+       run: |
+        cd function
+        zip -r ../${{github.sha}}.zip .
+      - name: Step 5 - Archieve artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: zipped-bundle
+          path: ${{github.sha}}.zip
+      
