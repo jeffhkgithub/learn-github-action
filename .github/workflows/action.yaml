@@ -21,11 +21,11 @@ jobs:
         cd function
         python -m pip install --upgrade pip
         if [ -f requiremetns.txt]; then pip install -r requirements.txt -t .; fi
-     - name: Step 4 - Create zip bundle
-       run: |
+    - name: Step 4 - reate zip bundle
+      run: |
         cd function
         zip -r ../${{github.sha}}.zip .
-      - name: Step 5 - Archieve artifact
+    - name: Step 5 - Archieve artifact
         uses: actions/upload-artifact@v2
         with:
           name: zipped-bundle
